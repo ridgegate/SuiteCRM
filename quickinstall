@@ -99,7 +99,13 @@ chmod -R 775 *
 sudo systemctl start nginx php-fpm
 sudo systemctl enable nginx php-fpm
 clear
+echo "SuiteCRM Installed. Please visit your ${MY_DOMAIN} to continue setup"
 echo
-echo "SuiteCRM Installed. Visit the designated URL for you"
-echo 
+echo "IMPORTANT! KEEP the following credential for your SuiteCRM installation"
+echo
+echo "Database Name: $dbname"
+echo "Username: $dbuser"
+echo "Password: $userpass"
+echo "Your MySQL ROOT Password is: $NEW_MYSQL_PASSWORD"
+echo
 echo

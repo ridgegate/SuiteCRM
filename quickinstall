@@ -13,6 +13,8 @@ echo "Please provide a name for the DATABASE"
 read -p "Type your database name, then press [ENTER] : " dbname
 echo "Please provide a DATABASE username"
 read -p "Type your database username, then press [ENTER] : " dbuser
+echo "Please provide the version number of SUITECRM that you would like to install"
+read -p "Type the version, then press [ENTER] : " suitecrmversion
 clear
 read -t 30 -p "Thank you. Please press [ENTER] continue or [Control]+[C] to cancel"
 
@@ -86,7 +88,7 @@ echo "GRANT ALL PRIVILEGES ON $dbname.* TO '$dbuser'@'localhost';" | sudo mysql 
 echo "FLUSH PRIVILEGES;" | sudo mysql -u root -p$NEW_MYSQL_PASSWORD
 clear
 
-export VER="7.10.7"
+VER="$suitecrmversion"
 wget https://github.com/salesagility/SuiteCRM/archive/v${VER}.tar.gz
 tar xvf v${VER}.tar.gz
 rm v${VER}.tar.gz
@@ -95,7 +97,10 @@ sudo rsync -avv SuiteCRM-${VER}/* /srv/suitecrm
 chown -R www-data:www-data /srv/suitecrm/
 cd /srv/suitecrm/
 chmod -R 775 *
-
-echo "Completed!"
+sudo systemctl start nginx php-fpm
+sudo systemctl enable nginx php-fpm
+clear
+echo
+echo "SuiteCRM Installed. Visit the designated URL for you"
 echo 
 echo

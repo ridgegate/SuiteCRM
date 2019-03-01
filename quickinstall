@@ -8,7 +8,7 @@
 #
 clear
 echo "Please provide your CRM URL (e.g. crm.mydomain.com)"
-read -p "Type your domain name, then press [ENTER] : " MY_DOMAIN
+read -p "Type your FULL CRM URL name, then press [ENTER] : " MY_DOMAIN
 echo "Please provide a name for the DATABASE"
 read -p "Type your database name, then press [ENTER] : " dbname
 echo "Please provide a DATABASE username"
@@ -37,8 +37,8 @@ perl -pi -e "s/.*post_max_size.*/post_max_size = 30M/;" /etc/php/7.2/fpm/php.ini
 perl -pi -e "s/.*upload_max_filesize.*/upload_max_filesize = 20M/;" /etc/php/7.2/fpm/php.ini
 clear
 #---Editing Nginx Server Block----
-wget https://raw.githubusercontent.com/ridgegate/Ubuntu18.04-LEMP-Mariadb-Wordpress-bashscript/master/nginx-default-block
-mv ./nginx-default-block /etc/nginx/sites-available/$MY_DOMAIN
+wget https://raw.githubusercontent.com/ridgegate/SuiteCRM/master/suitecrm-nginx-default-block
+mv ./suitecrm-nginx-default-block /etc/nginx/sites-available/$MY_DOMAIN
 perl -pi -e "s/domain.com/$MY_DOMAIN/g" /etc/nginx/sites-available/$MY_DOMAIN
 perl -pi -e "s/www.domain.com//g" /etc/nginx/sites-available/$MY_DOMAIN
 sudo ln -s /etc/nginx/sites-available/$MY_DOMAIN /etc/nginx/sites-enabled/
@@ -92,10 +92,10 @@ VER="$suitecrmversion"
 wget https://github.com/salesagility/SuiteCRM/archive/v${VER}.tar.gz
 tar xvf v${VER}.tar.gz
 rm v${VER}.tar.gz
-sudo mkdir /srv/suitecrm
-sudo rsync -avv SuiteCRM-${VER}/* /srv/suitecrm
-chown -R www-data:www-data /srv/suitecrm/
-cd /srv/suitecrm/
+sudo mkdir /var/www/crm
+sudo rsync -avv SuiteCRM-${VER}/* /var/www/crm
+chown -R www-data:www-data /var/www/crm
+cd /var/www/crm
 chmod -R 775 *
 sudo systemctl start nginx php-fpm
 sudo systemctl enable nginx php-fpm
